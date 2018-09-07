@@ -21,6 +21,12 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.google.gson.Gson;
 
+/**
+ * 根据官网文档搭建的简单demo。
+ * @Date 2018年9月7日
+ * @author E.E.
+ *
+ */
 public class ConnTest {
 	public static final String accessKey = "UEI2K7DZ9S0HC0UJ2Z63";
 	public static final String secretKey = "DQgb4vbguTvxme2IAoFBOeaHorjFltvGO71UVYDT";
@@ -62,6 +68,7 @@ public class ConnTest {
 		} while (objects.isTruncated());
 	}
 	
+	
 	private static void dataTest(AmazonS3 conn, Bucket bucket,String fileName){
 		ByteArrayInputStream input = new ByteArrayInputStream("Hello World!".getBytes());
 		conn.putObject(bucket.getName(), fileName, input, new ObjectMetadata());
@@ -83,16 +90,26 @@ public class ConnTest {
 		//创建连接
 		AmazonS3 conn = getConn();
 		
+		//列出所有的bucket
 		listBuckets(conn);
 		
+		//新建bucket
 		Bucket bucket = conn.createBucket("my-new-bucket"+UUID.randomUUID().toString());
 
 		String fileName = "hello.txt";
 		
+		//转为ByteArrayInputStream的方式保存文件
+		//生成下载链接
+		//下载到本地某个地方
 		dataTest(conn, bucket,fileName);
+		
+		//列出这个bucket的所有数据
 		listBucketData(conn, bucket);
 		
+		//删除文件（对象）
 		//conn.deleteObject(bucket.getName(), fileName);
+		
+		//删除整个bucket
 		//conn.deleteBucket(bucket.getName());
 		
 	}
